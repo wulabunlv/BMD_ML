@@ -29,10 +29,10 @@ number_of_train_data = int(.8 * number_of_data)
 number_of_test_data = number_of_data - number_of_train_data
 
 x_train, x_test = X[:number_of_train_data, :], X[number_of_train_data:, :]
-# mean_train_data = numpy.mean(train_data, axis=0)
-# std_train_data = numpy.std(train_data, axis=0)
-# x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
-# x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
+#mean_train_data = numpy.mean(train_data, axis=0)
+#std_train_data = numpy.std(train_data, axis=0)
+#x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
+#x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
 y_train, y_test = Y[:number_of_train_data], Y[number_of_train_data:]
 
 # RANDOM_STATE = 42
@@ -68,7 +68,7 @@ class RandomForestRegressorCustom(RandomForestRegressor):
 
 
 def create_model(epoch):
-    return RandomForestRegressorCustom(n_estimators=epoch, random_state = 42, warm_start=True, oob_score=True, max_features='sqrt', max_depth=4)
+    return RandomForestRegressorCustom(n_estimators=epoch, random_state = 42, warm_start=True, oob_score=True, max_features='sqrt', max_depth=5)
 
 
 def main(plot=True):
@@ -76,7 +76,7 @@ def main(plot=True):
     model = create_model(epoch)
     model.fit(x_train, y_train)
     model.score(x_test, y_test)
-#     print(model.score(x_test, y_test), ' SOE')
+    print(model.score(x_test, y_test), ' SOE')
 
     train_score, test_score = [], []
 

@@ -35,35 +35,36 @@ def main(plot=True):
     number_of_train_data = int(.8 * number_of_data)
     # number_of_test_data = number_of_data - number_of_train_data
 
+    # load dataset for MLP
     x_train, x_test = X[:number_of_train_data, :], X[number_of_train_data:, :]
-#     mean_train_data = numpy.mean(train_data, axis=0)
-#     std_train_data = numpy.std(train_data, axis=0)
-#     x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
-#     x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
+    #mean_train_data = numpy.mean(train_data, axis=0)
+    #std_train_data = numpy.std(train_data, axis=0)
+    #x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
+    #x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
     y_train, y_test = Y[:number_of_train_data], Y[number_of_train_data:]
 
     model = create_model()
 
     validatescores = cross_val_score(model, x_train, y_train)
-    print(validatescores, ' ALL TRY')
+#     print(validatescores, ' ALL TRY')
 
     history = model.fit(x_train, y_train)
-    print(history.feature_importances_)
-    print(history, ' HISTORY')
+#     print(history.feature_importances_)
+#     print(history, ' HISTORY')
     # y_pred = model.predict(x_test)
 
-    params = {'n_estimators': 100, 'max_depth': 2, 'min_samples_split': 2, 'learning_rate': 0.01, 'loss': 'ls'}
+    params = {'n_estimators': 100, 'max_depth': 3, 'min_samples_split': 2, 'learning_rate': 0.01, 'loss': 'ls'}
     gbr = GradientBoostingRegressor(**params)
     gbr.fit(x_train, y_train)
 
     test_score = numpy.zeros((params['n_estimators'],), dtype=numpy.float64)
     mse = mean_squared_error(y_test, gbr.predict(x_test))
 
-    print('Mean Square Error of test: ', mean_squared_error(y_test, gbr.predict(x_test)))
-    print('Mean Square Error of train: ', mean_squared_error(y_train, gbr.predict(x_train)))
+#     print('Mean Square Error of test: ', mean_squared_error(y_test, gbr.predict(x_test)))
+#     print('Mean Square Error of train: ', mean_squared_error(y_train, gbr.predict(x_train)))
 
-    print('Coefficient of Determination for test: ', r2_score(y_test, gbr.predict(x_test)))
-    print('Coefficient of Determination for train: ', r2_score(y_train, gbr.predict(x_train)))
+#     print('Coefficient of Determination for test: ', r2_score(y_test, gbr.predict(x_test)))
+#     print('Coefficient of Determination for train: ', r2_score(y_train, gbr.predict(x_train)))
 
     for i, y_pred in enumerate(gbr.staged_predict(x_test)):
         test_score[i] = gbr.loss_(y_test, y_pred)

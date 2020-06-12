@@ -21,7 +21,7 @@ with open('datamrosbmd1103_B1FND', 'rb') as file_handler:
 # tensorflow.set_random_seed(seed)
 # Y = label_binarize(Y, classes=[0,1])
 
-batch_size = 120
+batch_size = 10
 num_classes = 2
 
 number_of_data = X.shape[0]
@@ -29,14 +29,12 @@ number_of_train_data = int(.8 * number_of_data)
 number_of_test_data = number_of_data - number_of_train_data
 
 x_train, x_test = X[:number_of_train_data, :], X[number_of_train_data:, :]
-# mean_train_data = numpy.mean(train_data, axis=0)
-# std_train_data = numpy.std(train_data, axis=0)
-# x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
-# x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
+#mean_train_data = numpy.mean(train_data, axis=0)
+#std_train_data = numpy.std(train_data, axis=0)
+#x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
+#x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
 y_train, y_test = Y[:number_of_train_data], Y[number_of_train_data:]
 
-RANDOM_STATE = 42
-n_estimators = 100
 
 
 # override the RandomForestRegressor library
@@ -85,14 +83,14 @@ def main(plot=True):
         model.fit(x_train, y_train)
         train_score.append(model.score(x_train, y_train))
         test_score.append(model.score(x_test, y_test))
-    print(test_score, ' TEST SCORE')
-    print(train_score, ' TRAIN SCORE')
+#     print(test_score, ' TEST SCORE')
+#     print(train_score, ' TRAIN SCORE')
 
-    print('Mean Square Error of test: ', mean_squared_error(y_test, model.predict(x_test)))
-    print('Mean Square Error of train: ', mean_squared_error(y_train, model.predict(x_train)))
+#     print('Mean Square Error of test: ', mean_squared_error(y_test, model.predict(x_test)))
+#     print('Mean Square Error of train: ', mean_squared_error(y_train, model.predict(x_train)))
 
-    print('Coefficient of Determination for test: ', r2_score(y_test, model.predict(x_test)))
-    print('Coefficient of Determination for train: ', r2_score(y_train, model.predict(x_train)))
+#     print('Coefficient of Determination for test: ', r2_score(y_test, model.predict(x_test)))
+#     print('Coefficient of Determination for train: ', r2_score(y_train, model.predict(x_train)))
 
     if not plot:
         return train_score, test_score

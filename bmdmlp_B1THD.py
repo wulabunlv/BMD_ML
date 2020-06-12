@@ -5,7 +5,6 @@ from matplotlib import pyplot
 from sklearn.metrics import mean_squared_error, r2_score
 from keras.models import Sequential
 from keras.layers import Dense
-from tensorflow import keras
 
 with open('datamrosbmd1103_B1THD', 'rb') as file_handler:
     data = pickle.load(file_handler)
@@ -14,9 +13,9 @@ with open('datamrosbmd1103_B1THD', 'rb') as file_handler:
 
 def mlp():
     model = Sequential()
-    model.add(Dense(1125, input_dim=1125, kernel_initializer='normal', activation='relu', kernel_regularizer=keras.regularizers.l1(0.01)))
-    model.add(Dense(500, input_dim=500, kernel_initializer='normal', activation='relu'))
-    model.add(Dense(1, kernel_initializer='normal', activation='linear'))
+    model.add(Dense(23, input_dim=23, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(20, input_dim=15, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(1, input_dim=1, kernel_initializer='normal', activation='linear'))
     model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mse', 'mae'])
     return model
 
@@ -44,10 +43,10 @@ def main(plot=True):
 
     # load dataset
     x_train, x_test = X[:number_of_train_data, :], X[number_of_train_data:, :]
-#     mean_train_data = numpy.mean(train_data, axis=0)
-#     std_train_data = numpy.std(train_data, axis=0)
-#     x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
-#     x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
+    #mean_train_data = numpy.mean(train_data, axis=0)
+    #std_train_data = numpy.std(train_data, axis=0)
+    #x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
+    #x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
     y_train, y_test = Y[:number_of_train_data], Y[number_of_train_data:]
 
     x_train = x_train.astype('float32')
@@ -73,8 +72,8 @@ def main(plot=True):
 #     print('Mean Squared Error of test: ', mean_squared_error(y_test, y_pred))
 #     print('Mean Squared Error of train: ', mean_squared_error(y_train, model.predict(x_train)))
 
-    #print('Mean Absolute Error of test: ', mean_absolute_error(y_test, y_pred))
-    #print('Mean Absolute Error of train: ', mean_absolute_error(y_train, model.predict(x_train)))
+#     print('Mean Absolute Error of test: ', mean_absolute_error(y_test, y_pred))
+#     print('Mean Absolute Error of train: ', mean_absolute_error(y_train, model.predict(x_train)))
 
 #     print('Coefficient of Determination for test: ', r2_score(y_test, y_pred))
 #     print('Coefficient of Determination for train: ', r2_score(y_train, model.predict(x_train)))

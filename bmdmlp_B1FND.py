@@ -5,7 +5,6 @@ from matplotlib import pyplot
 from sklearn.metrics import mean_squared_error, r2_score
 from keras.models import Sequential
 from keras.layers import Dense
-from tensorflow import keras
 
 with open('datamrosbmd1103_B1FND', 'rb') as file_handler:
     data = pickle.load(file_handler)
@@ -14,9 +13,9 @@ with open('datamrosbmd1103_B1FND', 'rb') as file_handler:
 
 def mlp():
     model = Sequential()
-    model.add(Dense(1125, input_dim=1125, kernel_initializer='normal', activation='relu', kernel_regularizer=keras.regularizers.l1(0.01)))
-    model.add(Dense(500, input_dim=500, kernel_initializer='normal', activation='relu'))
-    model.add(Dense(1, kernel_initializer='normal', activation='linear'))
+    model.add(Dense(30, input_dim=23, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(20, input_dim=15, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(1, input_dim=10, kernel_initializer='normal', activation='linear'))
     model.compile(optimizer='adam', loss='mean_squared_error', metrics=['mse', 'mae'])
     return model
 
@@ -44,40 +43,40 @@ def main(plot=True):
 
     # load dataset
     x_train, x_test = X[:number_of_train_data, :], X[number_of_train_data:, :]
-#     mean_train_data = numpy.mean(train_data, axis=0)
-#     std_train_data = numpy.std(train_data, axis=0)
-#     x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
-#     x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
+    #mean_train_data = numpy.mean(train_data, axis=0)
+    #std_train_data = numpy.std(train_data, axis=0)
+    #x_train = (train_data - mean_train_data) / std_train_data  # mean variance normalization
+    #x_test = (test_data - mean_train_data) / std_train_data  # mean variance normalization
     y_train, y_test = Y[:number_of_train_data], Y[number_of_train_data:]
 
     x_train = x_train.astype('float32')
     x_test = x_test.astype('float32')
-    print('x_train shape:', x_train.shape)
-    print(x_train.shape[0], 'train samples')
-    print(x_test.shape[0], 'test samples')
+#     print('x_train shape:', x_train.shape)
+#     print(x_train.shape[0], 'train samples')
+#     print(x_test.shape[0], 'test samples')
 
     y_train = y_train.astype('float32')
     y_test = y_test.astype('float32')
 
     model = mlp()
     # history = model.fit(x_train, y_train, batch_size=batch_size, epochs=3, verbose=1, validation_data=(x_test, y_test))
-    history = model.fit(x_train, y_train, batch_size=batch_size, verbose=1, epochs=35, validation_data=(x_test, y_test))
-    print(history.history.keys())
+    history = model.fit(x_train, y_train, batch_size=batch_size, verbose=1, epochs=100, validation_data=(x_test, y_test))
+#     print(history.history.keys())
     score = model.evaluate(x_test, y_test, verbose=0)
-    print('Test loss:', score)
+#     print('Test loss:', score)
 
     score = model.evaluate(x_train, y_train, verbose=0)
-    print('Train loss:', score)
+#     print('Train loss:', score)
     y_pred = model.predict(x_test)
 
-    print('Mean Squared Error of test: ', mean_squared_error(y_test, y_pred))
-    print('Mean Squared Error of train: ', mean_squared_error(y_train, model.predict(x_train)))
+#     print('Mean Squared Error of test: ', mean_squared_error(y_test, y_pred))
+#     print('Mean Squared Error of train: ', mean_squared_error(y_train, model.predict(x_train)))
 
     #print('Mean Absolute Error of test: ', mean_absolute_error(y_test, y_pred))
     #print('Mean Absolute Error of train: ', mean_absolute_error(y_train, model.predict(x_train)))
 
-    print('Coefficient of Determination for test: ', r2_score(y_test, y_pred))
-    print('Coefficient of Determination for train: ', r2_score(y_train, model.predict(x_train)))
+#     print('Coefficient of Determination for test: ', r2_score(y_test, y_pred))
+#     print('Coefficient of Determination for train: ', r2_score(y_train, model.predict(x_train)))
 
     if not plot:
         return history.history['loss'], history.history['val_loss']
